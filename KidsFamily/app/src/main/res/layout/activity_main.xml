@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FF0D0D2B"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <!-- Status Bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/connectionStatus"
+            android:layout_width="0dp"
+            android:layout_height="26dp"
+            android:layout_weight="1"
+            android:text="CONNECTING..."
+            android:textColor="#FF00FFF5"
+            android:textSize="9sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/locationStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="26dp"
+            android:paddingHorizontal="10dp"
+            android:gravity="center"
+            android:text="Location: OFF"
+            android:textColor="#FF404060"
+            android:textSize="8sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- Divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginVertical="14dp"
+        android:background="#1AFFFFFF" />
+
+    <!-- SOS Button (besar) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btnSOS"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:background="#FFFF0033"
+            android:text="SOS"
+            android:textColor="#FFFFFFFF"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:stateListAnimator="@null" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="EMERGENCY"
+            android:textColor="#FF404060"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            android:letterSpacing="3" />
+    </LinearLayout>
+
+    <!-- Button: Toggle Location -->
+    <Button
+        android:id="@+id/btnToggleLocation"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="8dp"
+        android:background="#FF1A1A3E"
+        android:text="ENABLE LOCATION"
+        android:textColor="#FF00FFF5"
+        android:textSize="11sp"
+        android:textStyle="bold"
+        android:stateListAnimator="@null" />
+
+</LinearLayout>

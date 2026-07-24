@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Kids SOS Button: Big red fill + very thick black border -->
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="#33FFFFFF">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/kids_red" />
+            <stroke
+                android:width="4dp"
+                android:color="@color/black" />
+            <corners android:radius="0dp" />
+        </shape>
+    </item>
+</ripple>

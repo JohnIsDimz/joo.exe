@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <group
+        android:pivotX="54"
+        android:pivotY="54"
+        android:scaleX="0.6"
+        android:scaleY="0.6"
+        android:translateX="21.6"
+        android:translateY="21.6">
+        <!-- Child/safety icon -->
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M54,12C37.4,12 24,25.4 24,42c0,9.3 4.3,17.6 11,23.1V90l19,-6l19,6V65.1c6.7,-5.5 11,-13.8 11,-23.1C84,25.4 70.6,12 54,12z" />
+        <path
+            android:fillColor="#2196F3"
+            android:pathData="M54,36c-3.3,0 -6,2.7 -6,6c0,3.3 2.7,6 6,6s6,-2.7 6,-6c0,-3.3 -2.7,-6 -6,-6zM44,52c-3.3,0 -6,2.7 -6,6v2c0,2.2 1.8,4 4,4h24c2.2,0 4,-1.8 4,-4v-2c0,-3.3 -2.7,-6 -6,-6H44z" />
+    </group>
+</vector>

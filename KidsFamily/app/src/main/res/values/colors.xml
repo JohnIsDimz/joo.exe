@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Cyberpunk Neon Kids -->
+    <color name="bg_primary">#FF0D0D2B</color>
+    <color name="bg_card">#FF1A1A3E</color>
+
+    <color name="neon_cyan">#FF00FFF5</color>
+    <color name="neon_magenta">#FFFF00FF</color>
+    <color name="neon_green">#FF00FF88</color>
+    <color name="neon_red">#FFFF0033</color>
+
+    <color name="text_primary">#FFFFFFFF</color>
+    <color name="text_secondary">#FF8080AA</color>
+    <color name="text_dim">#FF404060</color>
+    <color name="text_on_color">#FF0D0D2B</color>
+
+    <color name="status_online">#FF00FFF5</color>
+    <color name="status_offline">#FF404060</color>
+    <color name="status_danger">#FFFF0033</color>
+
+    <color name="black">#FF0D0D2B</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="border_black">#1AFFFFFF</color>
+    <color name="kids_blue">#FF00FFF5</color>
+    <color name="kids_pink">#FFFF00FF</color>
+    <color name="kids_red">#FFFF0033</color>
+    <color name="bg_secondary">#FF1A1A3E</color>
+    <color name="text_secondary_old">#FF555555</color>
+</resources>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 🟣 CYBERPUNK RGB NEON PALETTE -->
+    <color name="bg_dark">#FF0D0D2B</color>
+    <color name="bg_card">#FF1A1A3E</color>
+    <color name="bg_surface">#FF12122E</color>
+    <color name="bg_input">#FF1E1E44</color>
+
+    <!-- Neon Colors -->
+    <color name="neon_cyan">#FF00FFF5</color>
+    <color name="neon_magenta">#FFFF00FF</color>
+    <color name="neon_green">#FF00FF88</color>
+    <color name="neon_yellow">#FFFFFF00</color>
+    <color name="neon_red">#FFFF0033</color>
+    <color name="neon_orange">#FFFF6600</color>
+
+    <!-- Text -->
+    <color name="text_primary">#FFFFFFFF</color>
+    <color name="text_secondary">#FF8080AA</color>
+    <color name="text_dim">#FF404060</color>
+    <color name="text_on_neon">#FF0D0D2B</color>
+
+    <!-- Status -->
+    <color name="status_online">#FF00FFF5</color>
+    <color name="status_offline">#FF404060</color>
+    <color name="status_danger">#FFFF00FF</color>
+    <color name="status_safe">#FF00FF88</color>
+    <color name="status_warning">#FFFFFF00</color>
+
+    <!-- Borders -->
+    <color name="border_cyan">#3300FFF5</color>
+    <color name="border_magenta">#33FF00FF</color>
+    <color name="border_dim">#1AFFFFFF</color>
+
+    <!-- Legacy compatibility -->
+    <color name="black">#FF0D0D2B</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="xix_blue">#FF00FFF5</color>
+    <color name="xix_purple">#FFFF00FF</color>
+    <color name="xix_red">#FFFF0033</color>
+    <color name="xix_green">#FF00FF88</color>
+    <color name="xix_yellow">#FFFFFF00</color>
+    <color name="xix_orange">#FFFF6600</color>
+    <color name="bg_primary">#FF0D0D2B</color>
+    <color name="bg_secondary">#FF12122E</color>
+    <color name="bg_card_old">#FF1A1A3E</color>
+    <color name="text_on_color">#FF0D0D2B</color>
+    <color name="text_on_black">#FFFFFFFF</color>
+    <color name="border_black">#FF404060</color>
+    <color name="border_light">#1AFFFFFF</color>
+    <color name="online_green">#FF00FFF5</color>
+    <color name="accent_yellow">#FFFFFF00</color>
+    <color name="divider">#1AFFFFFF</color>
+    <color name="surface_variant">#FF1A1A3E</color>
+    <color name="primary_solid">#FFFF00FF</color>
+    <color name="primary_dark">#FF0D0D2B</color>
+    <color name="primary_start">#FF00FFF5</color>
+    <color name="primary_end">#FFFF00FF</color>
+    <color name="secondary_start">#FF00FF88</color>
+    <color name="background">#FF0D0D2B</color>
+    <color name="surface">#FF1A1A3E</color>
+    <color name="text_hint">#FF404060</color>
+    <color name="nav_inactive">#FF404060</color>
+    <color name="nav_active">#FF00FFF5</color>
+    <color name="error">#FFFF00FF</color>
+    <color name="success">#FF00FF88</color>
+</resources>

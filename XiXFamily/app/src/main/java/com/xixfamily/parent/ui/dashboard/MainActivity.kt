@@ -1,8 +1,9 @@
 package com.xixfamily.parent.ui.dashboard
 
-import android.os.Bundle
 import android.graphics.Color
+import android.os.Bundle
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.xixfamily.parent.R
 import com.xixfamily.parent.network.ApiClient
@@ -20,13 +21,15 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         connectionStatus = findViewById(R.id.connectionStatus)
+        connectionStatus.text = "SYS:OFFLINE"
+        connectionStatus.setTextColor(Color.parseColor("#404060"))
 
-        // Load device list as default
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainer, MultiChildFragment())
-            .commit()
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainer, MultiChildFragment())
+                .commit()
+        }
 
-        // Auto-connect to server
         autoConnect()
     }
 
@@ -34,64 +37,48 @@ class MainActivity : AppCompatActivity() {
         Thread {
             try {
                 val prefs = PreferenceManager.getInstance(this)
+                val email = "parent_" + java.util.UUID.randomUUID().toString().take(8) + "@xix.app"
+
+                if (!prefs.isLoggedIn()) {
+                    val resp = ApiClient.register(email, "parent123", "Parent", "parent", null)
+                    if (resp != null && resp.has("token")) {
+                        prefs.saveAuthResponse(resp)
+                        ApiClient.setToken(prefs.getToken())
+                    }
+                } else {
+                    ApiClient.setToken(prefs.getToken())
+                }
 
                 if (prefs.isLoggedIn()) {
-                    ApiClient.setToken(prefs.getToken())
-                    runOnUiThread { connectWebSocket(prefs) }
-                    return@Thread
-                }
-
-                // Auto-register if not logged in
-                val deviceId = "parent_" + java.util.UUID.randomUUID().toString().take(8)
-                val email = "$deviceId@xixfamily.app"
-                val response = ApiClient.register(email, "parent123", "Parent", "parent", null)
-
-                if (response != null && response.has("token")) {
-                    prefs.saveAuthResponse(response)
-                    ApiClient.setToken(prefs.getToken())
-                    runOnUiThread { connectWebSocket(prefs) }
+                    runOnUiThread { connectWs(prefs) }
                 } else {
-                    // Try login
-                    val loginResponse = ApiClient.login(email, "parent123")
-                    if (loginResponse != null && loginResponse.has("token")) {
-                        prefs.saveAuthResponse(loginResponse)
+                    val resp2 = ApiClient.login(email, "parent123")
+                    if (resp2 != null && resp2.has("token")) {
+                        prefs.saveAuthResponse(resp2)
                         ApiClient.setToken(prefs.getToken())
-                        runOnUiThread { connectWebSocket(prefs) }
-                    } else {
-                        runOnUiThread {
-                            connectionStatus.text = "SYS:OFFLINE"
-                            connectionStatus.setTextColor(Color.parseColor("#404060")); connectionStatus.text = "SYS:OFFLINE"
-                        }
+                        runOnUiThread { connectWs(prefs) }
                     }
                 }
-            } catch (e: Exception) {
-                runOnUiThread {
-                    connectionStatus.text = "SYS:OFFLINE"
-                    connectionStatus.setTextColor(Color.parseColor("#404060")); connectionStatus.text = "SYS:OFFLINE"
-                }
-            }
+            } catch (_: Exception) {}
         }.start()
     }
 
-    private fun connectWebSocket(prefs: PreferenceManager) {
-        val socket = SocketManager.getInstance()
-        socket.connect(Config.SERVER_URL, prefs.getToken())
+    private fun connectWs(prefs: PreferenceManager) {
+        val sk = SocketManager.getInstance()
+        sk.connect(Config.SERVER_URL, prefs.getToken())
 
-        socket.addEventListener("socket:connected") {
+        sk.addEventListener("socket:connected") {
             runOnUiThread {
-                connectionStatus.text = "SYSTEM:ONLINE"
-                connectionStatus.setTextColor(Color.parseColor("#00FFF5")); connectionStatus.text = "SYSTEM:ONLINE"
-                socket.authenticate(
-                    prefs.getUserId(), prefs.getUserRole(),
-                    prefs.getFamilyCode(), prefs.getUserName()
-                )
+                connectionStatus.text = "SYS:ONLINE"
+                connectionStatus.setTextColor(Color.parseColor("#00FFF5"))
             }
+            sk.authenticate(prefs.getUserId(), prefs.getUserRole(), prefs.getFamilyCode(), prefs.getUserName())
         }
 
-        socket.addEventListener("socket:disconnected") {
+        sk.addEventListener("socket:disconnected") {
             runOnUiThread {
                 connectionStatus.text = "SYS:OFFLINE"
-                connectionStatus.setTextColor(Color.parseColor("#404060")); connectionStatus.text = "SYS:OFFLINE"
+                connectionStatus.setTextColor(Color.parseColor("#404060"))
             }
         }
     }

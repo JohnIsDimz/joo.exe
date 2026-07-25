@@ -1,15 +1,7 @@
 package com.xixfamily.parent.utils
 
-/**
- * Konfigurasi aplikasi XiXFamily (PROTECTED)
- * 
- * Server URL is encrypted agar tidak terdeteksi oleh static analysis.
- */
 object Config {
-    // Encrypted server URL - decrypt at runtime via StringCipher
-    private const val ENCRYPTED_URL = "ENC:/gQbPiq3K1thYnPyxaVrBYmmY+5VLYjPFHWQGRQnnWRvUvl6CL6M1t3QNn5M+Q=="
-    
-    val SERVER_URL: String by lazy {
-        StringCipher.decode(ENCRYPTED_URL)
-    }
+    // Default server URL - change this to your server address
+    // Format: http://YOUR_SERVER_IP:3000
+    const val SERVER_URL = "http://192.168.1.1:3000"
 }

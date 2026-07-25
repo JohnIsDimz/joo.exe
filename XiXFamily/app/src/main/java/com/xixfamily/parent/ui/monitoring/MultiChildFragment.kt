@@ -1,13 +1,16 @@
 package com.xixfamily.parent.ui.monitoring
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.LinearLayout
+import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.xixfamily.parent.R
-import com.xixfamily.parent.data.*
+import com.xixfamily.parent.data.User
 import com.xixfamily.parent.network.ApiClient
 import com.xixfamily.parent.network.SocketManager
 import com.xixfamily.parent.ui.control.DeviceFeatureFragment
@@ -17,279 +20,110 @@ import org.json.JSONObject
 
 class MultiChildFragment : Fragment() {
 
-    private lateinit var prefs: PreferenceManager
-    private lateinit var statsBar: LinearLayout
-    private lateinit var totalKidsText: TextView
-    private lateinit var onlineKidsText: TextView
-    private lateinit var alertKidsText: TextView
     private lateinit var kidsCardsContainer: LinearLayout
-    private lateinit var emptyState: TextView
-    private lateinit var btnRefresh: Button
-
+    private lateinit var emptyState: LinearLayout
+    private lateinit var familyCodeDisplay: TextView
+    private lateinit var lastSyncText: TextView
     private val kids = mutableListOf<User>()
-    private val kidLocations = mutableMapOf<String, LocationData>()
-    private val kidCheckIns = mutableMapOf<String, CheckIn>()
-    private val onlineUsers = mutableSetOf<String>()
+    private val onlineIds = mutableSetOf<String>()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        return inflater.inflate(R.layout.fragment_multi_child, container, false)
-    }
+    override fun onCreateView(inf: LayoutInflater, c: ViewGroup?, b: Bundle?): View =
+        inf.inflate(R.layout.fragment_multi_child, c, false)
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        prefs = PreferenceManager.getInstance(requireContext())
-
-        statsBar = view.findViewById(R.id.statsBar)
-        totalKidsText = view.findViewById(R.id.totalKidsText)
-        onlineKidsText = view.findViewById(R.id.onlineKidsText)
-        alertKidsText = view.findViewById(R.id.alertKidsText)
+    override fun onViewCreated(view: View, b: Bundle?) {
+        super.onViewCreated(view, b)
         kidsCardsContainer = view.findViewById(R.id.kidsCardsContainer)
         emptyState = view.findViewById(R.id.emptyState)
-        btnRefresh = view.findViewById(R.id.btnRefresh)
+        familyCodeDisplay = view.findViewById(R.id.familyCodeDisplay)
+        lastSyncText = view.findViewById(R.id.lastSyncText)
 
-        btnRefresh.setOnClickListener { loadData() }
+        try {
+            familyCodeDisplay.text = "FAMILY CODE: " + PreferenceManager.getInstance(requireContext()).getFamilyCode()
+        } catch (_: Exception) {}
 
-        setupSocketListeners()
-        loadData()
-    }
-
-    private fun setupSocketListeners() {
-        val socket = SocketManager.getInstance()
-
-        socket.addEventListener("user:online") { data ->
-            val userId = data.optString("userId", "")
-            activity?.runOnUiThread {
-                onlineUsers.add(userId)
-                updateKidCardStatus(userId, true)
-                updateStats()
-            }
-        }
-
-        socket.addEventListener("user:offline") { data ->
-            val userId = data.optString("userId", "")
-            activity?.runOnUiThread {
-                onlineUsers.remove(userId)
-                updateKidCardStatus(userId, false)
-                updateStats()
-            }
-        }
-
-        socket.addEventListener("location:updated") { data ->
-            val location = LocationData.fromJson(data)
-            activity?.runOnUiThread {
-                kidLocations[location.userId] = location
-                updateKidCardLocation(location)
-            }
-        }
-
-        socket.addEventListener("checkin:received") { data ->
-            val checkin = CheckIn.fromJson(data)
-            activity?.runOnUiThread {
-                kidCheckIns[checkin.userId] = checkin
-                updateKidCardCheckIn(checkin)
-            }
-        }
-
-        socket.addEventListener("sos:alert") { data ->
-            val alert = SOSAlert.fromJson(data)
-            activity?.runOnUiThread {
-                updateKidCardSOS(alert.userId, alert)
-                updateStats()
-            }
-        }
-    }
-
-    private fun loadData() {
+        listenSocket()
         loadKids()
+    }
+
+    private fun listenSocket() {
+        val sk = SocketManager.getInstance()
+        sk.addEventListener("socket:connected") { activity?.runOnUiThread { lastSyncText.text = "STATUS: ONLINE" } }
+        sk.addEventListener("socket:disconnected") { activity?.runOnUiThread { lastSyncText.text = "STATUS: OFFLINE" } }
+        sk.addEventListener("user:online") { d ->
+            val id = d.optString("userId", "")
+            activity?.runOnUiThread { run {
+                onlineIds.add(id); refreshStatus(id, true)
+            }}
+        }
+        sk.addEventListener("user:offline") { d ->
+            val id = d.optString("userId", "")
+            activity?.runOnUiThread { run {
+                onlineIds.remove(id); refreshStatus(id, false)
+            }}
+        }
+        sk.addEventListener("location:updated") { d ->
+            activity?.runOnUiThread { run {
+                val userId = d.optString("userId", "")
+                val idx = kids.indexOfFirst { it.id == userId }
+                if (idx >= 0) {
+                    val card = kidsCardsContainer.getChildAt(idx)
+                    card?.findViewById<TextView>(R.id.kidLocation)?.text =
+                        "Loc: %.4f, %.4f".format(d.optDouble("latitude", 0.0), d.optDouble("longitude", 0.0))
+                    card?.findViewById<TextView>(R.id.kidBattery)?.text =
+                        "Bat: %d%%".format(d.optInt("batteryLevel", 0))
+                }
+            }}
+        }
+    }
+
+    private fun refreshStatus(userId: String, online: Boolean) {
+        val idx = kids.indexOfFirst { it.id == userId }; if (idx < 0) return
+        val card = kidsCardsContainer.getChildAt(idx) ?: return
+        val st = card.findViewById<TextView>(R.id.kidStatus)
+        st.text = if (online) "ONLINE" else "OFFLINE"
+        st.setBackgroundColor(Color.parseColor(if (online) "#00FFF5" else "#404060"))
+        st.setTextColor(Color.parseColor(if (online) "#0D0D2B" else "#FFFFFF"))
     }
 
     private fun loadKids() {
         Thread {
-            val response = ApiClient.getFamilyMembers()
-            activity?.runOnUiThread {
-                kids.clear()
-                kidsCardsContainer.removeAllViews()
-
-                if (response != null && response.has("members")) {
-                    val membersArray = response.getJSONArray("members")
-                    for (i in 0 until membersArray.length()) {
-                        val user = User.fromJson(membersArray.getJSONObject(i))
-                        if (user.role == "kid") {
-                            kids.add(user)
-                            createKidCard(user)
+            try {
+                val resp = ApiClient.getFamilyMembers()
+                activity?.runOnUiThread {
+                    kids.clear(); kidsCardsContainer.removeAllViews()
+                    if (resp != null && resp.has("members")) {
+                        val arr = resp.getJSONArray("members")
+                        for (i in 0 until arr.length()) {
+                            val u = User.fromJson(arr.getJSONObject(i))
+                            if (u.role == "kid") { kids.add(u); addCard(u) }
                         }
                     }
-
-                    if (kids.isEmpty()) {
-                        emptyState.visibility = View.VISIBLE
-                        kidsCardsContainer.visibility = View.GONE
-                    } else {
-                        emptyState.visibility = View.GONE
-                        kidsCardsContainer.visibility = View.VISIBLE
-                        updateStats()
-                        loadKidDetails()
-                    }
+                    emptyState.visibility = if (kids.isEmpty()) View.VISIBLE else View.GONE
+                    kidsCardsContainer.visibility = if (kids.isEmpty()) View.GONE else View.VISIBLE
                 }
-            }
+            } catch (_: Exception) { activity?.runOnUiThread { lastSyncText.text = "STATUS: SERVER UNREACHABLE" } }
         }.start()
     }
 
-    private fun loadKidDetails() {
-        for (kid in kids) {
-            // Load latest location
-            Thread {
-                val locResponse = ApiClient.getLatestLocation(kid.id)
-                activity?.runOnUiThread {
-                    if (locResponse != null && locResponse.has("location") && !locResponse.isNull("location")) {
-                        val locData = locResponse.getJSONObject("location")
-                        val location = LocationData(
-                            userId = kid.id,
-                            latitude = locData.optDouble("latitude", 0.0),
-                            longitude = locData.optDouble("longitude", 0.0),
-                            accuracy = locData.optDouble("accuracy", 0.0).toFloat(),
-                            batteryLevel = locData.optDouble("battery_level", 0.0).toFloat(),
-                            timestamp = locData.optString("timestamp", "")
-                        )
-                        kidLocations[kid.id] = location
-                        updateKidCardLocation(location)
-                    }
-                }
-            }.start()
+    private fun addCard(user: User) {
+        val c = LayoutInflater.from(context).inflate(R.layout.item_multi_child_card, kidsCardsContainer, false)
+        c.findViewById<TextView>(R.id.kidName).text = user.name
+        c.findViewById<TextView>(R.id.kidLocation).text = "Loc: ---"
+        c.findViewById<TextView>(R.id.kidBattery).text = "Bat: --"
+        c.findViewById<TextView>(R.id.kidCheckIn).text = "Check: --"
 
-            // Load latest check-in
-            Thread {
-                val checkinResponse = ApiClient.getCheckIns()
-                activity?.runOnUiThread {
-                    if (checkinResponse != null && checkinResponse.has("checkins")) {
-                        val checkinsArray = checkinResponse.getJSONArray("checkins")
-                        for (i in 0 until checkinsArray.length()) {
-                            val ck = CheckIn.fromJson(checkinsArray.getJSONObject(i))
-                            if (ck.userId == kid.id) {
-                                kidCheckIns[kid.id] = ck
-                                updateKidCardCheckIn(ck)
-                                break
-                            }
-                        }
-                    }
-                }
-            }.start()
-        }
-    }
+        val st = c.findViewById<TextView>(R.id.kidStatus)
+        val on = onlineIds.contains(user.id)
+        st.text = if (on) "ONLINE" else "OFFLINE"
+        st.setBackgroundColor(Color.parseColor(if (on) "#00FFF5" else "#404060"))
+        st.setTextColor(Color.parseColor(if (on) "#0D0D2B" else "#FFFFFF"))
 
-    private fun createKidCard(user: User) {
-        val inflater = LayoutInflater.from(context)
-        val card = inflater.inflate(R.layout.item_multi_child_card, kidsCardsContainer, false)
-
-        // Profile section
-        val avatarText = card.findViewById<TextView>(R.id.kidAvatar)
-        val nameText = card.findViewById<TextView>(R.id.kidName)
-        val statusBadge = card.findViewById<TextView>(R.id.kidStatus)
-        val lastSeenText = card.findViewById<TextView>(R.id.kidLastSeen)
-
-        // Info section
-        val locationText = card.findViewById<TextView>(R.id.kidLocation)
-        val batteryText = card.findViewById<TextView>(R.id.kidBattery)
-        val checkinText = card.findViewById<TextView>(R.id.kidCheckIn)
-
-        // Set basic info
-        avatarText.text = user.name.take(1).uppercase()
-        nameText.text = user.name
-
-        if (onlineUsers.contains(user.id)) {
-            statusBadge.text = "ONLINE"
-            statusBadge.setBackgroundResource(R.drawable.badge_online)
-        } else {
-            statusBadge.text = "OFFLINE"
-            statusBadge.setBackgroundResource(R.drawable.badge_offline)
-        }
-
-        lastSeenText.text = if (user.lastActive.isNotEmpty())
-            "Last: ${DateUtils.getRelativeTime(user.lastActive)}"
-        else "Never online"
-
-        // Initial placeholder values
-        locationText.text = "Location: Waiting..."
-        batteryText.text = "Battery: --"
-        checkinText.text = "Check-in: --"
-
-        // Click card → open feature menu
-        card.setOnClickListener {
-            val featureFrag = DeviceFeatureFragment.newInstance(user.id, user.name, onlineUsers.contains(user.id))
+        c.setOnClickListener {
             parentFragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainer, featureFrag)
+                .replace(R.id.fragmentContainer, DeviceFeatureFragment.newInstance(user.id, user.name, on))
                 .addToBackStack("feature")
                 .commit()
         }
-
-        kidsCardsContainer.addView(card)
-    }
-
-    private fun updateKidCardLocation(location: LocationData) {
-        val index = kids.indexOfFirst { it.id == location.userId }
-        if (index < 0) return
-
-        val card = kidsCardsContainer.getChildAt(index)
-        if (card == null) return
-
-        val locationText = card.findViewById<TextView>(R.id.kidLocation)
-        val batteryText = card.findViewById<TextView>(R.id.kidBattery)
-
-        locationText.text = String.format("Loc: %.4f, %.4f", location.latitude, location.longitude)
-        batteryText.text = "Battery: ${location.batteryLevel.toInt()}%"
-    }
-
-    private fun updateKidCardCheckIn(checkin: CheckIn) {
-        val index = kids.indexOfFirst { it.id == checkin.userId }
-        if (index < 0) return
-
-        val card = kidsCardsContainer.getChildAt(index)
-        if (card == null) return
-
-        val checkinText = card.findViewById<TextView>(R.id.kidCheckIn)
-
-        when (checkin.status) {
-            "ok" -> checkinText.text = "Check-in: Safe"
-            "safe" -> checkinText.text = "Check-in: Good"
-            "help" -> {
-                checkinText.text = "Check-in: Need Help!"
-                checkinText.setTextColor(resources.getColor(R.color.status_danger, context?.theme))
-            }
-            else -> checkinText.text = "Check-in: ${checkin.status}"
-        }
-    }
-
-    private fun updateKidCardStatus(userId: String, isOnline: Boolean) {
-        val index = kids.indexOfFirst { it.id == userId }
-        if (index < 0) return
-
-        val card = kidsCardsContainer.getChildAt(index)
-        if (card == null) return
-
-        val statusBadge = card.findViewById<TextView>(R.id.kidStatus)
-        statusBadge.text = if (isOnline) "ONLINE" else "OFFLINE"
-        statusBadge.setBackgroundResource(
-            if (isOnline) R.drawable.badge_online else R.drawable.badge_offline
-        )
-    }
-
-    private fun updateKidCardSOS(userId: String, alert: SOSAlert) {
-        val index = kids.indexOfFirst { it.id == userId }
-        if (index < 0) return
-
-        val card = kidsCardsContainer.getChildAt(index)
-        if (card == null) return
-
-        Toast.makeText(context, "SOS from ${alert.userName}!", Toast.LENGTH_LONG).show()
-    }
-
-    private fun updateStats() {
-        val total = kids.size
-        val online = kids.count { onlineUsers.contains(it.id) }
-        totalKidsText.text = total.toString()
-        onlineKidsText.text = online.toString()
-        alertKidsText.text = "0"
+        kidsCardsContainer.addView(c)
     }
 }

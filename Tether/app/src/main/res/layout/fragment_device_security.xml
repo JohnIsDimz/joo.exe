@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_dark"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <!-- Header -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="20dp">
+
+            <TextView
+                android:id="@+id/btnBack"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:background="@drawable/bg_feature_btn"
+                android:gravity="center"
+                android:text="&lt;"
+                android:textColor="@color/neon_cyan"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:clickable="true"
+                android:focusable="true" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="14dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🛡️ ANTI-UNINSTALL"
+                    android:textColor="@color/neon_magenta"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/deviceName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="DEVICE"
+                    android:textColor="@color/text_dim"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- SECTION 1: HIDE ICON -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="⦿ HIDE LAUNCHER ICON"
+            android:textColor="@color/neon_cyan"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.1"
+            android:layout_marginBottom="10dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sembunyikan Tether Kids dari app drawer. Anak tidak bisa find &amp; uninstall dari Settings > Apps (lebih susah). Tether Kids tetap jalan di background."
+            android:textColor="@color/text_dim"
+            android:textSize="12sp"
+            android:layout_marginBottom="10dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnHideIcon"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="6dp"
+                android:text="🔒 HIDE ICON"
+                android:textColor="@color/bg_dark"
+                android:backgroundTint="@color/neon_cyan" />
+
+            <Button
+                android:id="@+id/btnShowIcon"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="6dp"
+                android:text="🔓 SHOW ICON"
+                android:textColor="@color/bg_dark"
+                android:backgroundTint="@color/neon_yellow" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@color/divider" />
+
+        <!-- SECTION 2: BLOCK UNINSTALL -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="⦿ BLOCK UNINSTALL"
+            android:textColor="@color/neon_magenta"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.1"
+            android:layout_marginBottom="10dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="PERLU Device Owner!\n\nTanpa DO: button greyed out (Device Owner tidak aktif).\n\nUntuk set DO: hubungkan HP ke PC lalu jalankan:\nadb shell dpm set-device-owner com.tether.kids/.service.DeviceAdminReceiver"
+            android:textColor="@color/text_dim"
+            android:textSize="12sp"
+            android:lineSpacingExtra="2dp"
+            android:layout_marginBottom="10dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnBlockUninstall"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="6dp"
+                android:text="🛡️ BLOCK"
+                android:textColor="@color/bg_dark"
+                android:backgroundTint="@color/neon_magenta" />
+
+            <Button
+                android:id="@+id/btnUnblockUninstall"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="6dp"
+                android:text="✅ UNBLOCK"
+                android:textColor="@color/bg_dark"
+                android:backgroundTint="@color/text_dim" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@color/divider" />
+
+        <!-- SECTION 3: PARENT PIN -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="⦿ PARENT PIN VERIFICATION"
+            android:textColor="@color/neon_yellow"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.1"
+            android:layout_marginBottom="10dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Generate 6-digit PIN yang valid 10 menit. Kirim ke anak untuk verifikasi sebelum mereka uninstall/install app. Anak harus input PIN untuk lanjut."
+            android:textColor="@color/text_dim"
+            android:textSize="12sp"
+            android:layout_marginBottom="10dp" />
+
+        <TextView
+            android:id="@+id/pinDisplay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/bg_card"
+            android:padding="14dp"
+            android:gravity="center"
+            android:text="PIN: ------"
+            android:textColor="@color/neon_cyan"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:fontFamily="monospace"
+            android:layout_marginBottom="6dp" />
+
+        <TextView
+            android:id="@+id/pinExpiry"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Valid until: --"
+            android:textColor="@color/text_dim"
+            android:textSize="11sp"
+            android:layout_marginBottom="10dp" />
+
+        <Button
+            android:id="@+id/btnGeneratePin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="🔐 GENERATE NEW PIN"
+            android:textColor="@color/bg_dark"
+            android:backgroundTint="@color/neon_yellow"
+            android:layout_marginBottom="6dp" />
+
+        <Button
+            android:id="@+id/btnSendPin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="📤 SEND PIN TO KID"
+            android:textColor="@color/bg_dark"
+            android:backgroundTint="@color/neon_cyan"
+            android:layout_marginBottom="6dp" />
+
+        <Button
+            android:id="@+id/btnRequestPin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="🔔 ASK KID TO ENTER PIN"
+            android:textColor="@color/bg_dark"
+            android:backgroundTint="@color/neon_green" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@color/divider" />
+
+        <!-- INFO -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_dim"
+            android:textSize="11sp"
+            android:lineSpacingExtra="2dp"
+            android:text="ℹ️ Info Singkat:\n\n• HIDE ICON = sembunyikan launcher. Tether Kids tetap jalan.\n• BLOCK UNINSTALL = block via Device Owner. Anak tidak bisa uninstall Tether Kids sama sekali (100% protection).\n• PARENT PIN = setiap anak mau install/uninstall app, harus input PIN dari orang tua. Kalau PIN salah, aksi ditolak + notif ke parent.\n• Semua event (install/uninstall) di-log ke server + alert real-time ke parent." />
+
+    </LinearLayout>
+</ScrollView>

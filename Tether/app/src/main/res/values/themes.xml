@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- CYBERPUNK RGB NEON THEME -->
+    <style name="Theme.Tether" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/neon_magenta</item>
+        <item name="colorPrimaryDark">@color/bg_dark</item>
+        <item name="colorAccent">@color/neon_cyan</item>
+        <item name="android:windowBackground">@color/bg_dark</item>
+        <item name="android:statusBarColor">@color/bg_dark</item>
+        <item name="android:navigationBarColor">@color/bg_dark</item>
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
+    <style name="Theme.Tether.Splash" parent="Theme.Tether">
+        <item name="android:windowBackground">@color/bg_dark</item>
+        <item name="android:statusBarColor">@color/bg_dark</item>
+    </style>
+
+    <!-- Feature Button Neon Style
+         - height bumped from 70dp -> 78dp so longer labels don't get clipped
+         - textSize reduced 9sp -> 8.5sp with letterSpacing 0.04 (no more char collision)
+         - textColor uses text_secondary (lighter) for better contrast on dark cards
+         - autoSizeText so labels like "FLASHLIGHT" / "CLIPBOARD" shrink gracefully
+    -->
+    <style name="FeatureBtn">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_columnWeight">1</item>
+        <item name="android:layout_height">78dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:paddingStart">4dp</item>
+        <item name="android:paddingEnd">4dp</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:textSize">8.5sp</item>
+        <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_margin">4dp</item>
+        <item name="android:background">@drawable/bg_feature_btn</item>
+        <item name="android:maxLines">2</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:letterSpacing">0.04</item>
+        <item name="android:lineSpacingExtra">0dp</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:autoSizeTextType">uniform</item>
+        <item name="android:autoSizeMinTextSize">6.5sp</item>
+        <item name="android:autoSizeMaxTextSize">9sp</item>
+        <item name="android:autoSizeStepGranularity">0.5sp</item>
+    </style>
+</resources>

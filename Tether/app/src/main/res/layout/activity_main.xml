@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FF0D0D2B"
+    android:orientation="vertical">
+
+    <!-- Header Bar (with anime mascot) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="center_vertical"
+        android:paddingStart="20dp"
+        android:paddingEnd="16dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="// Tether"
+            android:textColor="#FF00FFF5"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.02"
+            android:maxLines="1"
+            android:ellipsize="end" />
+
+        <!-- Anime mascot (MP4) — 48dp, kanan atas, auto-reactive ke status server (TIDAK bisa di-tap) -->
+        <VideoView
+            android:id="@+id/animeMascot"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="10dp"
+            android:contentDescription="@string/anime_mascot_desc"
+            android:background="@drawable/bg_anime_mascot" />
+
+        <TextView
+            android:id="@+id/connectionStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="26dp"
+            android:gravity="center"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"
+            android:text="SYS:OFFLINE"
+            android:textColor="#FF8080AA"
+            android:textSize="9sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.05"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:includeFontPadding="false"
+            android:background="#FF1A1A3E" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#3300FFF5" />
+
+    <!-- Fragment Container -->
+    <FrameLayout
+        android:id="@+id/fragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

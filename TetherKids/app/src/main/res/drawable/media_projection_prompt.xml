@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Media Projection Permission Prompt Background -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/kids_blue" />
+    <stroke
+        android:width="3dp"
+        android:color="@color/black" />
+    <corners android:radius="0dp" />
+</shape>

